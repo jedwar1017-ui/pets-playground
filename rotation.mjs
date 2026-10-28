@@ -10,6 +10,15 @@ export function localDayIndex(date = new Date()) {
   if (!(date instanceof Date) || Number.isNaN(date.getTime())) throw new TypeError("Valid date required");
   return Math.floor(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()) / 86400000);
 }
+// Day number for the calendar date in America/Chicago (or another zone). DST-safe because it
+// reads the wall-clock date in that zone instead of adding fixed 24-hour steps.
+export function zonedDayIndex(date = new Date(), timeZone = "America/Chicago") {
+  if (!(date instanceof Date) || Number.isNaN(date.getTime())) throw new TypeError("Valid date required");
+  const parts = {};
+  for (const p of new Intl.DateTimeFormat("en-US", {timeZone, year: "numeric", month: "numeric", day: "numeric"}).formatToParts(date))
+    if (p.type !== "literal") parts[p.type] = Number(p.value);
+  return Math.floor(Date.UTC(parts.year, parts.month - 1, parts.day) / 86400000);
+}
 export function buildRotation(eligible, slotCount = 7, dayIndex = 0) {
   if (!Array.isArray(eligible)) throw new TypeError("Eligible pets must be an array");
   if (!Number.isInteger(slotCount) || slotCount < 1 || slotCount > 20) throw new RangeError("Invalid slot count");
@@ -24,7 +33,8 @@ export function buildRotation(eligible, slotCount = 7, dayIndex = 0) {
   return { slots: active.concat(Array(slotCount - active.length).fill(null)), benched: ordered.slice(slotCount) };
 }
 
-if (typeof document !== "undefined") {
+// Only runs on the original rotation page (rotation.html), which has a #slots element.
+if (typeof document !== "undefined" && document.querySelector("#slots")) {
   const slotHost = document.querySelector("#slots");
   const benchHost = document.querySelector("#bench");
   const dateHost = document.querySelector("#day");

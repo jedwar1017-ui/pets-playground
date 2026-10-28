@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>@Pets — Rotation Playground</title>
+<style>
+:root{font-family:system-ui,sans-serif;color-scheme:dark;background:#090e20;color:#f3f7ff}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 85% -15%,#283e72,transparent 48%),#090e20}
+main{max-width:1060px;padding:30px 20px 70px;margin:auto}.eyebrow{color:#80d6ff;font-size:.8rem;font-weight:800;letter-spacing:.18em;text-transform:uppercase}
+h1{font-size:clamp(2.4rem,8vw,4.8rem);line-height:1;margin:14px 0}h2{font-size:1.45rem}p{line-height:1.6;color:#c4cfe6}
+.notice{padding:16px 19px;border:1px solid #7f9bd6;background:#1c2c4b;border-radius:16px}
+.controls{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px;margin:28px 0}
+button{border:none;background:#7de1fd;color:#07101e;border-radius:12px;font-size:1rem;font-weight:800;padding:14px 20px;cursor:pointer;min-height:48px}
+button:focus-visible{outline:3px solid #fef08a;outline-offset:4px}
+#slots{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:15px}
+.pet-card{background:#172642;border:1px solid #415d91;border-radius:20px;min-height:248px;padding:18px;display:flex;flex-direction:column;align-items:flex-start}
+.pet-card small{letter-spacing:.15em;color:#a1b4d8;font-weight:800}
+.orb{display:grid;place-items:center;align-self:center;width:106px;height:106px;margin:12px 0;border-radius:32px;background:linear-gradient(135deg,#2a6dc6,#935df4);box-shadow:0 0 35px #556ed54d;font-size:3.6rem}
+.pet-card:nth-child(2) .orb{background:linear-gradient(135deg,#188a94,#2851a1)}
+.pet-card:nth-child(3) .orb{background:linear-gradient(135deg,#6e3c96,#333b90)}
+.pet-card:nth-child(4) .orb{background:linear-gradient(135deg,#6156c8,#ae3d9b)}
+.pet-card h3{font-size:1.17rem;margin:2px 0 4px}.pet-card p{font-size:.7rem;letter-spacing:.03em;margin:0}
+.vacant{border-style:dashed;background:#101a30}.vacant .orb{background:#26334c;box-shadow:none;color:#9aacca}
+.moving .pet-card:not(.vacant) .orb{animation:float 1.4s ease-in-out infinite alternate}
+@keyframes float{to{transform:translateY(-15px) rotate(5deg)}}
+@media(prefers-reduced-motion:reduce){.moving .orb{animation:none!important}}
+footer{margin-top:28px;border-top:1px solid #465778;padding-top:12px}
+</style>
+</head>
+<body><main>
+<div class="eyebrow">STARDUST LAB / @PETS</div>
+<h1>Seven-slot<br>rotation</h1>
+<p>See the rotation logic working while original animation assets remain protected and unverified.</p>
+<p class="notice"><strong>Prototype, not an installed companion.</strong> Four index-listed character names use simulated symbols. Three slots remain unfilled; no original sprites are published here.</p>
+<div class="controls"><div><h2>Daily rotation</h2><p id="day" aria-live="polite"></p></div><button id="motion" type="button" aria-pressed="false">Preview motion</button></div>
+<section id="slots" aria-label="Seven companion slots"></section>
+<footer><p><strong>Bench:</strong> <span id="bench"></span></p><p>Pending art verification: Aurelon · Mochi · Nexus. A character is not called live until its actual animation runs in the target environment.</p></footer>
+</main><script type="module" src="./rotation.mjs"></script></body></html>
