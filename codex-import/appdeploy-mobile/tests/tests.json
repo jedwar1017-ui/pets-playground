@@ -1,0 +1,69 @@
+[
+  {
+    "name": "Choose a pet and use solo interaction",
+    "sanity": true,
+    "viewport": "mobile",
+    "covers": [
+      "seven-slot daily roster",
+      "pet selection",
+      "solo interaction choreography"
+    ],
+    "description": "Selecting one of seven visible pet slots changes the featured pet and the play action updates the stage state.",
+    "steps": [
+      "Tap the second daily pet slot",
+      "Tap Play",
+      "Read the interaction status beneath the stage"
+    ],
+    "expected": "The featured pet name matches the selected slot, and the status says that pet is playing."
+  },
+  {
+    "name": "Two-pet collaboration and partner selection",
+    "viewport": "desktop",
+    "covers": [
+      "two-pet mode",
+      "partner selection",
+      "shared shield interaction"
+    ],
+    "description": "Two distinct pets can share the stage and respond together.",
+    "steps": [
+      "Turn on Two pets together",
+      "Choose a different pet using the companion menu",
+      "Tap Protect"
+    ],
+    "expected": "Both companions are visible and the status names both pets as creating a shared shield."
+  },
+  {
+    "name": "Preview tomorrow's fair rotation",
+    "viewport": "mobile",
+    "covers": [
+      "daily round-robin",
+      "one benched pet",
+      "tomorrow preview",
+      "restore today"
+    ],
+    "description": "The daily rotation preview benches a different pet while keeping seven slots.",
+    "steps": [
+      "Observe the Benched today name",
+      "Tap Preview tomorrow",
+      "Observe the next-day benched name and seven slots",
+      "Tap Return to today"
+    ],
+    "expected": "Tomorrow benches a different pet, seven slots remain displayed, and returning restores today's bench."
+  },
+  {
+    "name": "Missing clip and invalid upload guardrail",
+    "viewport": "desktop",
+    "covers": [
+      "missing-asset honesty",
+      "local animation import",
+      "invalid file validation"
+    ],
+    "description": "Unlinked characters are explicitly placeholders and invalid media is rejected.",
+    "steps": [
+      "Select a pet without an imported clip",
+      "Confirm the stage shows Preview placeholder",
+      "Tap Import GIF or MP4 and choose an unsupported PNG if an upload fixture is available"
+    ],
+    "expected": "An unlinked pet is marked Preview placeholder; when an unsupported PNG is supplied the app reports Unsupported file instead of showing it as playable."
+  }
+]
