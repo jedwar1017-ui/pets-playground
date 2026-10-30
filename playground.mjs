@@ -1,6 +1,6 @@
 // Browser side of the playground: draws the pets, runs the animation loop, handles taps and drags.
 import {PETS, getPet, petLook, artLabel} from "./pets.mjs";
-import {buildRotation, zonedDayIndex} from "./rotation.mjs";
+import {dailyRotation, zonedDayIndex} from "./rotation.mjs";
 import {createWorld, step, setAction, resize, poke, hold, release, modeOf, getPetState} from "./roam.mjs";
 import {checkClip, saveClip, deleteClip, loadClips} from "./clips.mjs";
 
@@ -23,8 +23,9 @@ const state = {
 function say(text) { statusEl.textContent = text; }
 
 function lineup() {
-  const day = zonedDayIndex(new Date(), "America/Chicago");
-  const {slots, benched} = buildRotation(PETS, 7, day);
+  const now = new Date();
+  const day = zonedDayIndex(now, "America/Chicago");
+  const {slots, benched} = dailyRotation("preview", now);
   return {day, out: slots.filter(Boolean), napping: benched};
 }
 
@@ -121,7 +122,7 @@ function select(id, nudge) {
 function renderToday() {
   const date = new Intl.DateTimeFormat("en-US", {timeZone: "America/Chicago", weekday: "short", month: "short", day: "numeric"}).format(new Date());
   const nap = state.napping.map(p => p.name).join(", ");
-  $("#today").textContent = date + " · " + state.out.length + " out playing" + (nap ? " · " + nap + " napping" : "");
+  $("#today").textContent = date + " · Preview · " + state.out.length + " out playing" + (nap ? " · " + nap + " napping" : "");
   const hour = Number(new Intl.DateTimeFormat("en-US", {timeZone: "America/Chicago", hour: "numeric", hourCycle: "h23"}).format(new Date()));
   field.classList.toggle("day", hour >= 7 && hour < 19);
 }
@@ -181,9 +182,11 @@ async function importClip(id, input) {
     const verdict = checkClip(file.size, new Uint8Array(await file.slice(0, 16).arrayBuffer()));
     if (!verdict.ok) { say(verdict.reason); return; }
     const blob = file.type === verdict.type ? file : new Blob([file], {type: verdict.type});
-    await saveClip(id, blob).catch(() => say("Couldn't save it in this browser; it will show until you reload."));
+    let persisted = true;
+    await saveClip(id, blob).catch(() => { persisted = false; });
     setClip(id, blob);
-    say(getPet(id).name + " now uses your animation. It stays on this device only.");
+    say(persisted ? getPet(id).name + " clip saved on this device; playback remains unverified."
+      : "Clip preview only: could not save in this browser. It will be lost on reload.");
   } catch (err) { say("That file couldn't be used: " + err.message); }
 }
 
