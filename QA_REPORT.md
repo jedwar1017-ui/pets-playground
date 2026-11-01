@@ -18,3 +18,19 @@ Date: 2026-10-28
 - Long-running performance on low-end hardware.
 
 **Release state: working browser playground with placeholder pets; real art is added per device by the owner.**
+
+## Consolidation verification — 2026-10-29
+- Baseline commit `08b0fbf38ad794bd2578673fea4dbb880bae4358`:
+  `node --test tests/*.test.mjs`, Node v24.22.1: **27/27 passed**.
+- After consolidation: the same command: **31/31 passed**. Added coverage for
+  conservative asset eligibility, independent verification gates, one slot for
+  multiple forms, Chicago midnight/bench fairness in both modes, provenance and
+  immutable records. Original four-candidate algorithm test now uses neutral
+  fixtures rather than treating an asset index as the roster.
+- `node --check playground.mjs` and `git diff --check`: passed.
+- Browser smoke test attempted but did not run: bundled Playwright's Chromium
+  executable is absent. Browser installation failed with a truncated/invalid ZIP.
+  The earlier Chromium results above apply to the baseline, not this revision.
+- No real assets, physical devices, Safari, screen readers or pair-state playback
+  were validated. Node 22 remains the configured CI target; this local run used 24.
+- Source-only draft; no merge, deployment, private media upload or live certification.
