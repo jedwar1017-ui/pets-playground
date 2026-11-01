@@ -191,7 +191,10 @@ async function importClip(id, input) {
 }
 
 async function removeClip(id) {
-  try { await deleteClip(id); } catch {}
+  try { await deleteClip(id); } catch {
+    say("Could not remove the saved animation. It is still attached; try again before closing this browser.");
+    return;
+  }
   setClip(id, null);
   say(getPet(id).name + " is back to its placeholder.");
 }
@@ -255,3 +258,4 @@ setInterval(() => {
 buildWorld(); applyCalm();
 requestAnimationFrame(t => { last = t; frame(t); });
 loadClips().then(saved => { for (const [id, blob] of Object.entries(saved)) if (getPet(id)) setClip(id, blob); }).catch(() => {});
+
